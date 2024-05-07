@@ -1,8 +1,8 @@
 import 'dart:math';
 
+import 'package:expense_tracker/data/data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -86,9 +86,9 @@ class MainScreen extends StatelessWidget {
                 ],
                 gradient: LinearGradient(
                   colors: [
-                    Theme.of(context).colorScheme.primary,
-                    Theme.of(context).colorScheme.secondary,
                     Theme.of(context).colorScheme.tertiary,
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.primary,
                   ],
                   transform: const GradientRotation(pi / 4),
                 ),
@@ -240,8 +240,10 @@ class MainScreen extends StatelessWidget {
             const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: 10,
+                itemCount: transactionsData.length,
                 itemBuilder: (context, int index) {
+                  final data = transactionsData[index];
+
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10.0),
                     child: Container(
@@ -262,19 +264,18 @@ class MainScreen extends StatelessWidget {
                                       width: 50,
                                       height: 50,
                                       decoration: BoxDecoration(
-                                        color: Colors.yellow.shade700,
+                                        color: data['color'],
                                         shape: BoxShape.circle,
                                       ),
-                                      child: const Icon(
-                                        CupertinoIcons.hammer,
-                                        size: 30,
+                                      child: Center(
+                                        child: data['icon'],
                                       ),
                                     ),
                                   ],
                                 ),
                                 const SizedBox(width: 12),
                                 Text(
-                                  'Food',
+                                  data['name'],
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Theme.of(context)
@@ -287,11 +288,12 @@ class MainScreen extends StatelessWidget {
                             ),
                             const SizedBox(width: 10),
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  '-\$40.00',
+                                  data['totalAmount'],
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 16,
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onBackground,
@@ -299,7 +301,7 @@ class MainScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  'Today',
+                                  data['date'],
                                   style: TextStyle(
                                     fontSize: 14,
                                     color:

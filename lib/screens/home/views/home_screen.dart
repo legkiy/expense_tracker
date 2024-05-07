@@ -1,11 +1,23 @@
 import 'dart:math';
 
-import 'package:expense_tracker/screens/home/views/main_screen.dart';
+import 'package:expense_tracker/screens/screens.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Widget> wigets = [
+    const MainScreen(),
+    const StatsScreen(),
+  ];
+
+  int screenIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +26,13 @@ class HomeScreen extends StatelessWidget {
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         child: BottomNavigationBar(
+          onTap: (value) {
+            setState(() {
+              screenIndex = value;
+            });
+          },
+          currentIndex: screenIndex,
+          fixedColor: Theme.of(context).colorScheme.primary,
           backgroundColor: Colors.white,
           showSelectedLabels: false,
           showUnselectedLabels: false,
@@ -47,9 +66,9 @@ class HomeScreen extends StatelessWidget {
             shape: BoxShape.circle,
             gradient: LinearGradient(
               colors: [
-                Theme.of(context).colorScheme.tertiary,
-                Theme.of(context).colorScheme.secondary,
                 Theme.of(context).colorScheme.primary,
+                Theme.of(context).colorScheme.secondary,
+                Theme.of(context).colorScheme.tertiary,
               ],
               transform: const GradientRotation(pi / 4),
             ),
@@ -57,7 +76,7 @@ class HomeScreen extends StatelessWidget {
           child: const Icon(CupertinoIcons.add),
         ),
       ),
-      body: const MainScreen(),
+      body: screenIndex == 0 ? const MainScreen() : const StatsScreen(),
     );
   }
 }
